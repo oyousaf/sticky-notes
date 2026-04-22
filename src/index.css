@@ -136,3 +136,176 @@ textarea:focus {
   height: 45px;
   width: 45px;
 }
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.9);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --spinner-animation-speed: 2s;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* 🔥 Background upgrade */
+#app {
+  background-color: #1e1f25;
+  background-image:
+    linear-gradient(#2a2b32 0.08em, transparent 0.08em),
+    linear-gradient(90deg, #2a2b32 0.08em, transparent 0.08em);
+  background-size: 4em 4em;
+
+  height: 100vh;
+  position: relative;
+  overflow: auto;
+}
+
+/* Card */
+.card {
+  width: 400px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: absolute;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.card:active {
+  transform: scale(0.995);
+}
+
+/* Body */
+.card-body {
+  padding: 1em;
+  border-radius: 0 0 12px 12px;
+}
+
+.card-body textarea {
+  background-color: inherit;
+  border: none;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  font-size: 15px;
+  line-height: 1.5;
+  transition: opacity 0.2s ease;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+/* Header */
+.card-header {
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+}
+
+/* Spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin var(--spinner-animation-speed) linear infinite;
+}
+
+.card-saving {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Controls panel */
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+
+  position: fixed;
+  left: 1.2em;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: rgba(53, 54, 62, 0.85);
+  backdrop-filter: blur(10px);
+
+  padding: 1em;
+  border-radius: 40px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+}
+
+/* Add button */
+#add-btn {
+  background-color: rgba(107, 107, 107, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+#add-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+#add-btn:active {
+  transform: scale(0.95);
+}
+
+/* Color buttons */
+.color {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.color:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.color:active {
+  transform: scale(0.95);
+}
