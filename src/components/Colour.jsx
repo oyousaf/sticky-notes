@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 import { updateNote } from "../lib/notesApi";
 
-const Color = ({ color }) => {
+const Colour = ({ color }) => {
   const { selectedNote, notes, setNotes } = useContext(NotesContext);
 
-  const changeColor = async () => {
+  const changeColour = async () => {
     if (!selectedNote) {
       alert("Select a note first");
       return;
@@ -31,11 +31,11 @@ const Color = ({ color }) => {
 
   return (
     <div
-      onClick={changeColor}
+      onClick={changeColour}
       className="color"
       style={{ backgroundColor: color.colorHeader }}
     />
   );
 };
 
-export default Color;
+export default Colour;
