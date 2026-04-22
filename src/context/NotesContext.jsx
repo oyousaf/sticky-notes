@@ -16,7 +16,45 @@ const NotesProvider = ({ children }) => {
 
   const init = async () => {
     const response = await db.notes.list();
-    setNotes(response.documents);
+
+    const normalised = response.documents.map((note) => {
+      let parsedContent;
+      let parsedColors;
+      let parsedPosition;
+
+      try {
+        parsedContent = JSON.parse(note.content);
+      } catch {
+        parsedContent = note.content;
+      }
+
+      try {
+        parsedColors = parsedContent.colors
+          ? JSON.parse(parsedContent.colors)
+          : parsedContent.colors;
+      } catch {
+        parsedColors = parsedContent.colors;
+      }
+
+      try {
+        parsedPosition = parsedContent.position
+          ? JSON.parse(parsedContent.position)
+          : parsedContent.position;
+      } catch {
+        parsedPosition = parsedContent.position;
+      }
+
+      return {
+        ...note,
+        content: {
+          ...parsedContent,
+          colors: parsedColors,
+          position: parsedPosition,
+        },
+      };
+    });
+
+    setNotes(normalised);
     setLoading(false);
   };
 

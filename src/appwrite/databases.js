@@ -1,40 +1,49 @@
-import { databases, collections } from "./config";
-import { ID } from "appwrite";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002";
 
-const db = {};
+const db = {
+  notes: {
+    create: async (payload) => {
+      const res = await fetch(`${API_URL}/api/notes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-collections.forEach((collection) => {
-  db[collection.name] = {
-    create: async (payload, id = ID.unique()) => {
-      return await databases.createDocument(
-        collection.dbId,
-        collection.id,
-        id,
-        payload
-      );
+      return res.json();
     },
+
     update: async (id, payload) => {
-      return await databases.updateDocument(
-        collection.dbId,
-        collection.id,
-        id,
-        payload
-      );
+      const res = await fetch(`${API_URL}/api/notes/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      return res.json();
     },
+
     delete: async (id) => {
-      return await databases.deleteDocument(collection.dbId, collection.id, id);
+      await fetch(`${API_URL}/api/notes/${id}`, {
+        method: "DELETE",
+      });
+
+      return { success: true };
     },
+
     get: async (id) => {
-      return await databases.getDocument(collection.dbId, collection.id, id);
+      const res = await fetch(`${API_URL}/api/notes/${id}`);
+      return res.json();
     },
-    list: async (queries) => {
-      return await databases.listDocuments(
-        collection.dbId,
-        collection.id,
-        queries
-      );
+
+    list: async () => {
+      const res = await fetch(`${API_URL}/api/notes`);
+      return res.json();
     },
-  };
-});
+  },
+};
 
 export { db };

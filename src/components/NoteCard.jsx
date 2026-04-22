@@ -1,23 +1,29 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 
 import DeleteButton from "../components/DeleteButton";
 import Spinner from "../icons/Spinner";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils";
 import { db } from "../appwrite/databases";
-import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 
 const NoteCard = ({ note }) => {
-  const body = bodyParser(note.body);
-  const [position, setPosition] = useState(JSON.parse(note.position));
-  const colors = JSON.parse(note.colors);
+  // ✅ NEW: use normalised content
+  const content = note.content || {};
+
+  const body = bodyParser(content.body);
+  const [position, setPosition] = useState(content.position || { x: 0, y: 0 });
+  const colors = content.colors || {
+    colorHeader: "#333",
+    colorBody: "#444",
+    colorText: "#fff",
+  };
 
   const textAreaRef = useRef(null);
   const cardRef = useRef(null);
   const { setSelectedNote } = useContext(NotesContext);
 
   useEffect(() => {
-    autoGrow(textAreaRef.current); // Ensure text area height is adjusted after rendering
+    autoGrow(textAreaRef.current);
   }, []);
 
   // Mouse start position for dragging
@@ -52,38 +58,40 @@ const NoteCard = ({ note }) => {
   const [saving, setSaving] = useState(false);
   const keyUpTimer = useRef(null);
 
+  // ✅ FIXED: correct payload structure
   const saveData = async (key, value) => {
-    const payload = { [key]: JSON.stringify(value) };
+    const payload = {
+      content: JSON.stringify({
+        ...content,
+        [key]: value,
+      }),
+    };
+
     try {
-      setSaving(true); // Set saving state before trying to save
+      setSaving(true);
       await db.notes.update(note.$id, payload);
     } catch (error) {
       console.error(error);
     } finally {
-      setSaving(false); // Reset saving state after trying to save
+      setSaving(false);
     }
   };
 
   const mouseUp = async () => {
-    // Remove event listeners when dragging ends
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
 
-    // Save the updated position if necessary
-    const newPosition = setNewOffset(cardRef.current); // {x,y}
+    const newPosition = setNewOffset(cardRef.current);
     await saveData("position", newPosition);
   };
 
   const handleKeyUp = async () => {
-    // Initiate "saving" state
     setSaving(true);
 
-    // Clear existing timer if present
     if (keyUpTimer.current) {
       clearTimeout(keyUpTimer.current);
     }
 
-    // Set timer to trigger save in 2 seconds
     keyUpTimer.current = setTimeout(() => {
       saveData("body", textAreaRef.current.value);
     }, 2000);
@@ -97,7 +105,7 @@ const NoteCard = ({ note }) => {
         backgroundColor: colors.colorBody,
         left: `${position.x}px`,
         top: `${position.y}px`,
-        position: "absolute", // Ensure absolute positioning for the card
+        position: "absolute",
       }}
     >
       <div
@@ -113,6 +121,7 @@ const NoteCard = ({ note }) => {
         )}
         <DeleteButton noteId={note.$id} />
       </div>
+
       <div className="card-body">
         <textarea
           ref={textAreaRef}
