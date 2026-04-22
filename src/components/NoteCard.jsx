@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import DeleteButton from "../components/DeleteButton";
 import Spinner from "../icons/Spinner";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils";
-import { db } from "../appwrite/databases";
+import { db } from "../lib/databases";
 import { NotesContext } from "../context/NotesContext";
 
 const NoteCard = ({ note }) => {
