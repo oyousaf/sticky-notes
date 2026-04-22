@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://204.168.141.215:3002";
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const db = {
   notes: {
