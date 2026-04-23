@@ -17,7 +17,7 @@ export const updateNote = async (note, updates) => {
     ...updates,
   };
 
-  await db.notes.update(note.$id, {dasdsadad
+  await db.notes.update(note.$id, {
     content: JSON.stringify(newContent),
   });
 
