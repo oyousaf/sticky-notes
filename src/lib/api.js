@@ -1,4 +1,5 @@
-const BASE = (import.meta.env.VITE_API_URL || "/api/notes").replace(/\/+$/, "");
+// Keep requests same-origin; the server owns the backend address.
+const BASE = "/api/notes";
 
 const url = (id) => (id ? `${BASE}/${encodeURIComponent(id)}` : BASE);
 

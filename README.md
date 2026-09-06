@@ -11,8 +11,6 @@ npm ci
 npm run dev
 ```
 
-Copy `.env.example` to `.env` to override the backend. Vite proxies `/api/notes` to `API_BASE_URL`, which must include the full notes collection path (for example, `http://localhost:3002/api/notes`). When unset, the existing project's backend is used. `VITE_API_URL` optionally bypasses that proxy; it is public client configuration and must not contain secrets.
-
 ## Use
 
 - Add a note with the plus button. Select a note to change its colour.
@@ -39,9 +37,3 @@ npm test
 npm run test:e2e
 npm run build
 ```
-
-Browser tests use installed Microsoft Edge through Playwright and mock all notes requests. They never modify your backend. Desktop and mobile screenshots are written to the ignored `test-results/` directory.
-
-## Deployment
-
-Import the repository into Vercel, using its Vite preset (`npm run build`, output `dist`). Set the server-side `API_BASE_URL` to the full notes collection URL. Leave `VITE_API_URL` unset to use the same-origin serverless routes. Those routes forward requests to the backend; authentication remains the backend's responsibility.
