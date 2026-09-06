@@ -1,14 +1,9 @@
-import NotesPage from "./pages/NotesPage";
-import NotesProvider from "./context/NotesContext";
+import NotesBoard from "./components/NotesBoard.jsx";
 
-function App() {
-  return (
-    <div id="app">
-      <NotesProvider>
-        <NotesPage />
-      </NotesProvider>
-    </div>
-  );
-}
+const App = () => (
+  <div className="app">
+    <NotesBoard />
+  </div>
+);
 
 export default App;
