@@ -54,7 +54,8 @@ export function createNotesStore(api, delay = 400) {
       const version = ++loadVersion;
       emit({ loading: true, error: null });
       try {
-        const rows = await api.list();
+        const response = await api.list();
+        const rows = Array.isArray(response) ? response : response?.documents;
         if (!Array.isArray(rows)) throw new Error("The notes server returned an invalid response.");
         const notes = rows.map(decodeNote);
         if (version === loadVersion) emit({ notes, loading: false });

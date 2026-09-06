@@ -9,13 +9,16 @@ const coordinate = (value) => typeof value === "number" && Number.isFinite(value
 export const decodeNote = (row) => {
   if (!row || typeof row.$id !== "string" || !row.$id) throw new Error("Invalid note identifier.");
   const parsed = safeParse(row.content) ?? {};
-  const legacyId = typeof parsed.colors?.id === "string" ? parsed.colors.id.replace(/^color-/, "") : DEFAULT_NOTE_COLOR;
+  // Older rows store these fields as JSON strings inside content.
+  const colors = safeParse(parsed.colors);
+  const position = safeParse(parsed.position);
+  const legacyId = typeof colors?.id === "string" ? colors.id.replace(/^color-/, "") : DEFAULT_NOTE_COLOR;
   const colorId = legacyId === "purple" ? "pink" : legacyId;
   return {
     id: row.$id,
     body: typeof parsed.body === "string" ? parsed.body : "",
     colors: getColorById(colorId ?? DEFAULT_NOTE_COLOR),
-    position: { x: coordinate(parsed.position?.x), y: coordinate(parsed.position?.y) },
+    position: { x: coordinate(position?.x), y: coordinate(position?.y) },
   };
 };
 
